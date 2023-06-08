@@ -105,7 +105,7 @@ DATABASES = {
         'NAME': 'database-dev',
         'USER': 'postgres',
         'PASSWORD': '12345678',
-        'HOST': 'database-dev.ca7zrnuaeaa4.us-east-1.rds.amazonaws.com',
+        'HOST': '172.31.96.72',
         'PORT': '5432',
     }
 }
