@@ -1,0 +1,20 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+    commands:
+      - pip install -r requirements.txt
+  pre_build:
+    commands:
+      - python manage.py collectstatic --noinput  # Collect static files
+      - python manage.py migrate  # Apply database migrations
+  build:
+    commands:
+      - python manage.py test  # Run unit tests
+  post_build:
+    commands:
+      - gunicorn fundii_backend.wsgi:application --bind 0.0.0.0:8000 --daemon  # Start the web server
+artifacts:
+  files:
+    - '**/*'
