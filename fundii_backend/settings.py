@@ -91,12 +91,21 @@ WSGI_APPLICATION = 'fundii_backend.wsgi.application'
 # }
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'fundii',
+    #     'USER': 'postgres',
+    #     'PASSWORD': '1234',
+    #     'HOST': 'localhost',
+    #     'PORT': '5432',
+    # }
+
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'fundii',
+        'NAME': 'dev-database-1',
         'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
+        'PASSWORD': '',
+        'HOST': 'dev-database-1.ca7zrnuaeaa4.us-east-1.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
