@@ -1,6 +1,6 @@
 #!/usr/bin/bash 
 
-sed -i 's/\[]/\["54.144.250.113"]/' /home/ubuntu/fundii_backend/fundii_backend/settings.py
+sed -i 's/\[]/\["3.80.202.79"]/' /home/ubuntu/fundii_backend/fundii_backend/settings.py
 
 python manage.py migrate 
 python manage.py makemigrations     
