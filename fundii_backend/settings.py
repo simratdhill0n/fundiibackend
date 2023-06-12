@@ -24,8 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
-JWT_SECRET_KEY = env('JWT_SECRET_KEY')
+# SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = "django-insecure-#y_kh73zws_w%5&_+i(=-p75(nw#o0)d#+v^_p**^&3vv1buv)"
+# JWT_SECRET_KEY = env('JWT_SECRET_KEY')
+JWT_SECRET_KEY = "d8d8dd6c8003dd637b3903a18fea0119c4f1900ab51260c9339b6ff26c6a032f"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -98,13 +100,21 @@ WSGI_APPLICATION = 'fundii_backend.wsgi.application'
 # }
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': env('PSQL_ENGINE'),
+    #     'NAME': env('PSQL_DB_NAME'),
+    #     'USER': env('PSQL_DB_USER'),
+    #     'PASSWORD': env('PSQL_DB_PASSWD'),
+    #     'HOST': env('PSQL_HOST'),
+    #     'PORT': env('PSQL_PORT'),
+    # }
     'default': {
-        'ENGINE': env('PSQL_ENGINE'),
-        'NAME': env('PSQL_DB_NAME'),
-        'USER': env('PSQL_DB_USER'),
-        'PASSWORD': env('PSQL_DB_PASSWD'),
-        'HOST': env('PSQL_HOST'),
-        'PORT': env('PSQL_PORT'),
+        'ENGINE': "django.db.backends.postgresql",
+        'NAME': "dev_database",
+        'USER': "postgres",
+        'PASSWORD': "12345678",
+        'HOST': "database-development.ca7zrnuaeaa4.us-east-1.rds.amazonaws.com",
+        'PORT': "5432",
     }
 }
 
