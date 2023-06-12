@@ -33,8 +33,5 @@ hooks:
       - location: scripts/start_app.sh
         timeout: 300
         runas: ubuntu
-      - location: scripts/set_environment_variables.sh
-        timeout: 300
-        runas: ubuntu
   
   
