@@ -6,7 +6,7 @@ After=network.target
 User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/fundii_backend
-ExecStart=/home/ubuntu/env/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/ubuntu/fundii_backend/fundii_backend/fundii_backend.sock fundii_backend.wsgi:application
+ExecStart=/home/ubuntu/env/bin/gunicorn --access-logfile /home/ubuntu/fundii_backend/logs/gunicorn/access.log --error-logfile /home/ubuntu/fundii_backend/logs/gunicorn/error.log --workers 3 --bind unix:/home/ubuntu/fundii_backend/fundii_backend/fundii_backend.sock fundii_backend.wsgi:application
 
        
 [Install]
