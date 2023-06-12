@@ -2,7 +2,7 @@
 #!/usr/bin/bash
 
 sudo systemctl daemon-reload
-sudo rm -f /etc/nginx/sites-enabled/default
+sudo rm -rf /etc/nginx/sites-enabled/*
 
 sudo cp /home/ubuntu/fundii_backend/nginx/nginx.conf /etc/nginx/sites-available/fundii_backend
 sudo ln -s /etc/nginx/sites-available/fundii_backend /etc/nginx/sites-enabled/
