@@ -32,7 +32,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "3.80.202.79",
-    "api.fundiilabs.com"
+    "api.fundiilabs.com",
+    "localhost"
 ]
 
 # Application definition
