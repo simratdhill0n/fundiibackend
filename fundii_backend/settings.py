@@ -21,17 +21,15 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-print(os.getenv('SECRET_KEY'))
+env = os.getenv
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = env('SECRET_KEY')
-SECRET_KEY = "django-insecure-#y_kh73zws_w%5&_+i(=-p75(nw#o0)d#+v^_p**^&3vv1buv)"
-# JWT_SECRET_KEY = env('JWT_SECRET_KEY')
-JWT_SECRET_KEY = "d8d8dd6c8003dd637b3903a18fea0119c4f1900ab51260c9339b6ff26c6a032f"
+SECRET_KEY = env('SECRET_KEY')
+JWT_SECRET_KEY = env('JWT_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -92,33 +90,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'fundii_backend.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': env('PSQL_ENGINE'),
-    #     'NAME': env('PSQL_DB_NAME'),
-    #     'USER': env('PSQL_DB_USER'),
-    #     'PASSWORD': env('PSQL_DB_PASSWD'),
-    #     'HOST': env('PSQL_HOST'),
-    #     'PORT': env('PSQL_PORT'),
-    # }
     'default': {
-        'ENGINE': "django.db.backends.postgresql",
-        'NAME': "dev_database",
-        'USER': "postgres",
-        'PASSWORD': "12345678",
-        'HOST': "database-development.ca7zrnuaeaa4.us-east-1.rds.amazonaws.com",
-        'PORT': "5432",
+        'ENGINE': env('PSQL_ENGINE'),
+        'NAME': env('PSQL_DB_NAME'),
+        'USER': env('PSQL_DB_USER'),
+        'PASSWORD': env('PSQL_DB_PASSWD'),
+        'HOST': env('PSQL_HOST'),
+        'PORT': env('PSQL_PORT'),
     }
 }
 
@@ -160,7 +139,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
@@ -202,4 +181,13 @@ LOGGING = {
         'handlers': ['file'],
         'level': 'DEBUG',
     },
-}
+} if env('USERNAME') != 'simrat' else None
+
+AWS_ACCESS_KEY_ID = env('DEVELOPER_AWS_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = env('DEVELOPER_AWS_SECRET_KEY')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
+
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

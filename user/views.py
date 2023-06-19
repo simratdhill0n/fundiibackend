@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+import datetime
 
 
 class LogoutAPIView(APIView):
@@ -40,6 +41,10 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
         if not user.groups.filter(id=group_id).exists():
             return Response({'detail': f'User does not belong to {group.name} group'}, status=status.HTTP_403_FORBIDDEN)
+
+        user.last_login = datetime.datetime.now()
+
+        user.save()
 
         return super().post(request, *args, **kwargs)
 
