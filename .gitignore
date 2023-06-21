@@ -1,1 +1,7 @@
+# envirionment
 env
+
+# migrations
+**/migrations/
+**/migrations/*.py
+**/migrations/*.pyc
