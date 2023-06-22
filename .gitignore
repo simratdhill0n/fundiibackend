@@ -6,4 +6,5 @@ env
 **/migrations/*.py
 **/migrations/*.pyc
 
-**/__pycache__/
+**/__pycache__/*.py
+**/__pycache__/*.pyc
