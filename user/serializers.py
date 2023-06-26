@@ -1,8 +1,12 @@
 from rest_framework import serializers
-from .models import User, Group
+from .models import User
+from django.contrib.auth.models import Group
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.models import Permission
 from django.contrib.auth.hashers import make_password
+from rest_framework.response import Response
+from rest_framework import status
 
 class TokenBlacklistSerializer(serializers.Serializer):
     refresh_token = serializers.CharField()
@@ -41,3 +45,6 @@ class CurrentUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         exclude = ['password']
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    group = serializers.IntegerField()

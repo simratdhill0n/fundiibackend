@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'simple_history',
     'corsheaders',
     'phonenumber_field',
+    'drf_yasg',
     'user.apps.UserConfig',
     'startup.apps.StartupConfig',
     'investor.apps.InvestorConfig',
@@ -183,6 +184,8 @@ LOGGING = {
     },
 } if env('USERNAME') != 'simrat' else None
 
+LOGIN_URL = '/user/token/'
+
 AWS_ACCESS_KEY_ID = env('DEVELOPER_AWS_ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY = env('DEVELOPER_AWS_SECRET_KEY')
 AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
@@ -191,3 +194,5 @@ AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+CONTACT_EMAIL = env('CONTACT_EMAIL')

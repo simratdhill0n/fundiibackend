@@ -1,8 +1,7 @@
 from rest_framework import generics
 from .models import User, Group
-from .serializers import UserSerializer, TokenBlacklistSerializer, GroupSerializer, CurrentUserSerializer
+from .serializers import UserSerializer, TokenBlacklistSerializer, GroupSerializer, CurrentUserSerializer, CustomTokenObtainPairSerializer
 from .permissions import CreateUserPermission
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.response import Response
 from rest_framework import status
@@ -24,7 +23,7 @@ class LogoutAPIView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = TokenObtainPairSerializer
+    serializer_class = CustomTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
 
@@ -32,7 +31,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         
         user = User.objects.get(username=username)
 
-        group_id = request.data.get('group')  # Assuming the group name is provided in the request data
+        group_id = request.data.get('group')
         
         try:
             group = Group.objects.get(id=group_id)
