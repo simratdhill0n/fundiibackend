@@ -3,76 +3,104 @@ from simple_history.models import HistoricalRecords
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.postgres.fields import ArrayField
 from user.models import User
-from utils.utils import generate_unique_filename
+from utils.utils import (generate_avtar_filename, generate_pitch_filename, generate_pitch_video_filename, generate_signed_ncnd_filename, validate_1000_word_limit, validate_100_word_limit, 
+                         validate_200_word_limit, validate_150_word_limit, generate_company_proof_filename, generate_identity_proof_filename,
+                         generate_cover_photo_filename, generate_signed_nda_filename, generate_unsigned_nda_filename, generate_unique_filename)
+import datetime
+
+from utils.choicefields import (FUNDING_ROUNDS, LAUNCH_STATUS_CHOICES, INDUSTRY_CHOICES, VERTICAL_CHOICES, SALES_TYPE_CHOICES, TARGET_CUSTOMER_LOCATIONS,
+                                AGE_CHOICES, EDUCATION_CHOICES)
+
+from investor.models import Investor
 
 # Create your models here.
 
-def generate_cover_photo_filename(instance, filename):
-    return generate_unique_filename(instance, filename, 'cover_photo')
-
-def generate_pitch_video_filename(instance, filename):
-    return generate_unique_filename(instance, filename, 'pitch_video')
-
-def generate_unsigned_nda_filename(instance, filename):
-    return generate_unique_filename(instance, filename, 'unsigned_nda')
-
-def generate_pitch_filename(instance, filename):
-    return generate_unique_filename(instance, filename, 'pitch')
-
-def generate_signed_nda_filename(instance, filename):
-    return generate_unique_filename(instance, filename, 'signed_nda')
-
-
-FUNDING_ROUNDS = (
-        ('seed', 'Seed Round'),
-        ('series_a', 'Series A'),
-        ('series_b', 'Series B'),
-        ('series_c', 'Series C'),
-        ('pre_ipo', 'Pre-IPO'),
-    )
-
-class Team(models.Model):
-
-    name = models.CharField(max_length=255,null=True, blank=True)
-    role = models.CharField(max_length=255,null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
-    phone_number = PhoneNumberField()
-    accomplishment = models.CharField(max_length=255,null=True, blank=True)
-    linkedin = models.URLField(null=True, blank=True)
-    profile_picture = models.URLField(null=True, blank=True)
-    history = HistoricalRecords()
-    founder = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-
-class Industry(models.Model):
-    name= models.CharField(max_length=30)
-
 class Company(models.Model):
-
+    
     upload_directory = 'startup/company/'
-
     history = HistoricalRecords()
-    founder = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    name = models.CharField(max_length=100, null=True, blank=True)
-    location = models.CharField(max_length=100,null=True, blank=True)
-    website = models.URLField(null=True, blank=True)
-    phone_number = PhoneNumberField(null=True, blank=True)
-    industry = models.ManyToManyField(to=Industry)
-    stage = models.CharField(max_length=10, choices=FUNDING_ROUNDS, null=True, blank=True)
-    audience = models.BigIntegerField(default=0,null=True, blank=True)
-    raised_amount = models.BigIntegerField(null=True, blank=True)
-    pitch_title = models.CharField(max_length=5000,null=True, blank=True)
-    business_description = models.CharField(max_length=10000,null=True, blank=True)
-    company_highlights = ArrayField(models.CharField(max_length=255), null=True, blank=True)
-    story_description = models.CharField(max_length=1000,null=True, blank=True)
-    minimum_amount = models.IntegerField(null=True, blank=True)
-    maximum_amount = models.IntegerField(null=True, blank=True)
-    valuation = models.IntegerField(null=True, blank=True)
-    percentage = models.IntegerField(null=True, blank=True)
-    unsigned_nda = models.FileField(upload_to=generate_unsigned_nda_filename, null=True, blank=True)
-    signed_nda = models.FileField(upload_to=generate_signed_nda_filename,null=True, blank=True)
     step_one = models.BooleanField(default=False)
     step_two = models.BooleanField(default=False)
     step_three = models.BooleanField(default=False)
-    cover_photo = models.FileField(upload_to=generate_cover_photo_filename, null=True, blank=True)
-    pitch_video = models.FileField(upload_to=generate_pitch_video_filename, null=True, blank=True)
-    pitch = models.FileField(upload_to=generate_pitch_filename, null=True, blank=True)
+    founder = models.ForeignKey(to=User, on_delete=models.CASCADE, null=True)
+
+    # step 1 fields
+
+    project_title = models.CharField(max_length=64, blank=True)
+    business_description = models.CharField(validators=(validate_100_word_limit,), blank=True)
+    launch_status = models.CharField(max_length=20, choices=LAUNCH_STATUS_CHOICES, default='no')
+    industry = ArrayField(
+        models.CharField(choices=INDUSTRY_CHOICES, max_length=100, blank=True), 
+        blank=True,
+        null=True
+    )
+    vertical = ArrayField(models.CharField(max_length=64, choices=VERTICAL_CHOICES), blank= True, null=True)
+    incorporation_location = models.CharField(max_length= 100, blank=True)
+    headquarters_location = models.CharField(max_length=100, blank=True)
+    website = models.URLField(blank=True, null=True)
+
+    # step 2 fields
+
+    overview = models.CharField(validators=(validate_1000_word_limit,), blank=True)
+    pitch = models.FileField(upload_to=generate_pitch_filename, blank=True)
+    stage = models.CharField(max_length=100, choices=FUNDING_ROUNDS, blank=True)
+    sales_type = models.CharField(max_length=10, choices=SALES_TYPE_CHOICES, default='other')
+    business_model = models.CharField(validators=( validate_200_word_limit,), blank=True)
+    revenue_record_six_month = models.IntegerField(default=0)
+    target_customers_location = models.CharField(max_length=30, choices=TARGET_CUSTOMER_LOCATIONS, blank=True)
+    problem_solution = models.CharField(validators=(validate_200_word_limit,), blank=True)
+    regional_competitors = models.CharField(validators=(validate_100_word_limit,), blank=True)
+    international_competitors = models.CharField(validators=(validate_100_word_limit,), blank=True)
+    competitive_advantage = models.CharField(validators=(validate_150_word_limit,), blank=True)
+    monthly_burn_rate = models.IntegerField(default=0)
+    current_cash_balance = models.IntegerField(default=0)
+    already_raised_money = models.BooleanField(default=False)
+    number_of_full_time_employees = models.PositiveIntegerField(default=0)
+    number_of_part_time_employees = models.PositiveIntegerField(default=0)
+    past_companies_bool = models.BooleanField(default=False)
+    past_companies = ArrayField(models.CharField(max_length=64), blank=True, null=True)
+    pitch_deck = models.FileField(upload_to=generate_pitch_video_filename, null=True)
+
+    # verfification fields
+
+    risk_analysis = models.BooleanField(default=False)
+    persona = models.BooleanField(default=False)
+    aws_identity_verification = models.BooleanField(default=False)
+
+    # step 3 fields
+
+    signed_ncnd = models.FileField(upload_to=generate_signed_ncnd_filename,null=True, blank=True)
+
+    #interested investors
+
+    interested_investors = models.ManyToManyField(to= Investor)
+
+    avtar = models.FileField(upload_to= generate_avtar_filename , null=True, blank=True)
+
+    class Meta:
+        unique_together = ('founder',)
+
+class Teammate(models.Model):
+
+    first_name = models.CharField(max_length=50)
+    family_name = models.CharField(max_length=50)
+    age = models.IntegerField(choices=AGE_CHOICES)
+    education_level = models.CharField(max_length=20, choices=EDUCATION_CHOICES)
+    country_of_residence = models.CharField(max_length=50)
+    nationality = models.CharField(max_length=50)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=20)
+    linkedin_page = models.URLField(blank=True, null=True)
+    position_at_company = models.CharField(max_length=50)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return f"{self.first_name} {self.family_name}"
+
+class Deal(models.Model):
+
+    company = models.ForeignKey(to=Company, on_delete=models.CASCADE)
+    investors = models.ManyToManyField(to='investor.Investor')
+    amount = models.PositiveIntegerField()
+    date = models.DateTimeField()

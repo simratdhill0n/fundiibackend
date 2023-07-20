@@ -3,7 +3,7 @@
 sed -i 's/\[]/\["3.80.202.79"]/' /home/ubuntu/fundii_backend/fundii_backend/settings.py
 
 python manage.py migrate 
-python manage.py makemigrations     
+python manage.py makemigrations
 python manage.py collectstatic
 sudo service gunicorn restart
 sudo service nginx restart

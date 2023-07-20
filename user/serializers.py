@@ -36,6 +36,11 @@ class UserSerializer(serializers.ModelSerializer):
         validated_data['password'] = encrypted_password
         return super().create(validated_data)
 
+class UserGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        exclude = ('password',)
+
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group

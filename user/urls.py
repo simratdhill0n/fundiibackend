@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
@@ -11,4 +11,6 @@ urlpatterns = [
     path('token/refresh/', views.CustomTokenRefreshView.as_view(), name='token_refresh'),
     path('check-unique/', views.CheckUniqueAPI.as_view(), name='check_unique'),
     path('logout/', views.LogoutAPIView.as_view(), name='logout'),
+    # re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', views.activate, name='activate'),
+    path('activate/<str:uidb64>/<str:token>/', views.activate, name='activate'),
 ]
