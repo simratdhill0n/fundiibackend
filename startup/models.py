@@ -11,8 +11,6 @@ import datetime
 from utils.choicefields import (FUNDING_ROUNDS, LAUNCH_STATUS_CHOICES, INDUSTRY_CHOICES, VERTICAL_CHOICES, SALES_TYPE_CHOICES, TARGET_CUSTOMER_LOCATIONS,
                                 AGE_CHOICES, EDUCATION_CHOICES)
 
-from investor.models import Investor
-
 # Create your models here.
 
 class Company(models.Model):
@@ -22,7 +20,7 @@ class Company(models.Model):
     step_one = models.BooleanField(default=False)
     step_two = models.BooleanField(default=False)
     step_three = models.BooleanField(default=False)
-    founder = models.ForeignKey(to=User, on_delete=models.CASCADE, null=True)
+    founder = models.ForeignKey(to='user.User', on_delete=models.CASCADE, null=True)
 
     # step 1 fields
 
@@ -73,7 +71,7 @@ class Company(models.Model):
 
     #interested investors
 
-    interested_investors = models.ManyToManyField(to= Investor)
+    interested_investors = models.ManyToManyField(to= 'investor.Investor')
 
     avtar = models.FileField(upload_to= generate_avtar_filename , null=True, blank=True)
 
@@ -92,7 +90,7 @@ class Teammate(models.Model):
     phone_number = models.CharField(max_length=20)
     linkedin_page = models.URLField(blank=True, null=True)
     position_at_company = models.CharField(max_length=50)
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    user = models.ForeignKey(to='user.User', on_delete=models.CASCADE)
     history = HistoricalRecords()
 
     def __str__(self):

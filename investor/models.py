@@ -1,5 +1,4 @@
 from django.db import models
-from user.models import User
 from utils.choicefields import FUNDING_ROUNDS, INVESTOR_TYPES, REGION_CHOICES, INDUSTRY_CHOICES, VERTICAL_CHOICES
 from utils.utils import generate_identity_proof_filename, generate_organisation_document_filename, generate_profile_picture_filename
 from django.contrib.postgres.fields import ArrayField
@@ -11,7 +10,7 @@ class Investor(models.Model):
 
     upload_directory = 'investor/'
 
-    owner = models.ForeignKey(to= User, on_delete=models.CASCADE, null=True, blank= True)
+    owner = models.ForeignKey(to= 'user.User', on_delete=models.CASCADE, null=True, blank= True)
     organisation_document  = models.FileField(upload_to=generate_organisation_document_filename,null=True, blank=True)
     birthdate = models.DateField(default=timezone.now)
     nationality = models.CharField(max_length=100, null=True, blank=True)
