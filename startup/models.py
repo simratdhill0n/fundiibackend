@@ -2,7 +2,6 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.postgres.fields import ArrayField
-from user.models import User
 from utils.utils import (generate_avtar_filename, generate_pitch_filename, generate_pitch_video_filename, generate_signed_ncnd_filename, validate_1000_word_limit, validate_100_word_limit, 
                          validate_200_word_limit, validate_150_word_limit, generate_company_proof_filename, generate_identity_proof_filename,
                          generate_cover_photo_filename, generate_signed_nda_filename, generate_unsigned_nda_filename, generate_unique_filename)
