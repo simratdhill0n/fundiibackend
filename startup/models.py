@@ -10,6 +10,10 @@ import datetime
 from utils.choicefields import (FUNDING_ROUNDS, LAUNCH_STATUS_CHOICES, INDUSTRY_CHOICES, VERTICAL_CHOICES, SALES_TYPE_CHOICES, TARGET_CUSTOMER_LOCATIONS,
                                 AGE_CHOICES, EDUCATION_CHOICES)
 
+from datetime import timedelta
+from django.utils.timezone import utc
+from user.models import User
+
 # Create your models here.
 
 class Company(models.Model):
@@ -101,3 +105,28 @@ class Deal(models.Model):
     investors = models.ManyToManyField(to='investor.Investor')
     amount = models.PositiveIntegerField()
     date = models.DateTimeField()
+
+class Appointment(models.Model):
+
+    staff = models.ManyToManyField(to='user.User', limit_choices_to={'is_staff':True})
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    available_startups = models.ManyToManyField(to="startup.Company", related_name="available_startups")
+    investor = models.ForeignKey(to="investor.Investor", on_delete=models.SET_NULL, null=True)
+    selected_startup = models.ForeignKey(to="startup.Company", on_delete=models.SET_NULL, null= True, related_name="selected_startup")
+    history = HistoricalRecords()
+
+    def save(self, *args, **kwargs):
+        
+        self.end_time = self.start_time + timedelta(minutes=30)
+
+        if not self.staff.exists():
+
+            self.staff.add(User.objects.filter(is_superuser=True).first())
+
+        if not self.start_time.tzinfo:
+            self.start_time = self.start_time.replace(tzinfo=utc)
+        if not self.end_time.tzinfo:
+            self.end_time = self.end_time.replace(tzinfo=utc)
+
+        super().save(*args, **kwargs)
