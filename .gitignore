@@ -1,5 +1,6 @@
 # envirionment
 env
+.env
 
 # migrations
 **/migrations/
