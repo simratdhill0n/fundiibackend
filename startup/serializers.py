@@ -34,7 +34,19 @@ class CompanyRetrieveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Company
-        fields = ['id', 'step_one', 'step_two', 'step_three', 'project_title', 'business_description', 'launch_status', 'industry', 'vertical', 'incorporation_location', 'headquarters_location', 'website', 'overview', 'pitch', 'stage', 'sales_type', 'business_model', 'revenue_record_six_month', 'target_customers_location', 'problem_solution', 'regional_competitors', 'international_competitors', 'competitive_advantage', 'monthly_burn_rate', 'current_cash_balance', 'already_raised_money', 'number_of_full_time_employees', 'number_of_part_time_employees', 'past_companies_bool', 'past_companies', 'pitch_deck', 'risk_analysis', 'persona', 'aws_identity_verification', 'signed_ncnd', 'founder', 'teammates', 'pitch_presigned_url', 'pitch_deck_presigned_url', 'signed_ncnd_presigned_url']
+        fields = [
+            'id', 'step_one', 'step_two', 'step_three', 'project_title', 'business_description',
+            'launch_status', 'industry', 'vertical', 'incorporation_location', 'headquarters_location',
+            'website', 'overview', 'pitch', 'stage', 'sales_type', 'business_model',
+            'revenue_record_six_month', 'target_customers_location', 'problem_solution',
+            'regional_competitors', 'international_competitors', 'competitive_advantage',
+            'monthly_burn_rate', 'current_cash_balance', 'already_raised_money',
+            'number_of_full_time_employees', 'number_of_part_time_employees', 'past_companies_bool',
+            'past_companies', 'pitch_deck', 'risk_analysis', 'persona', 'aws_identity_verification',
+            'signed_ncnd', 'founder', 'teammates', 'pitch_presigned_url', 'pitch_deck_presigned_url',
+            'signed_ncnd_presigned_url', 'avtar_presigned_url'
+        ]
+
 
     def get_founder(self, instance):
         founder = instance.founder

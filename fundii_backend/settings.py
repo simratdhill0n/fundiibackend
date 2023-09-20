@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'startup.apps.StartupConfig',
     'investor.apps.InvestorConfig',
+    'appointment.apps.AppointmentConfig'
 ]
 
 MIDDLEWARE = [
